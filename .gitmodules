@@ -1,0 +1,3 @@
+[submodule "CPUID"]
+	path = CPUID
+	url = https://github.com/pffang/CPUID.git
