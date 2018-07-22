@@ -1,4 +1,5 @@
 #pragma once
+#include <byteswap.h>
 #include <cstdint>
 #include <cstring>
 #include <iostream>
@@ -52,9 +53,14 @@ protected:
         0xF4292244, 0x432AFF97, 0xAB9423A7, 0xFC93A039, 0x655B59C3, 0x8F0CCC92, 0xFFEFF47D, 0x85845DD1, 0x6FA87E4F, 0xFE2CE6E0, 0xA3014314, 0x4E0811A1, 0xF7537E82, 0xBD3AF235, 0x2AD7D2BB, 0xEB86D391   //
     };
 
-    size_t bits_count          = 0;                                                 // counter for number of bits
+    size_t bits_count        = 0;                                                 // counter for number of bits
     uint32_t state[4]          = {0x67452301, 0xEFCDAB89, 0x98BADCFE, 0x10325476};  // digest so far
     uint8_t digest[16]         = {0};                                               // the result
     bool finalized             = false;
     uint8_t buffer[BLOCK_SIZE] = {0};  // bytes that didn't fit in last 64 byte chunk
+
+    // encodes input (uint32_t) into output (byte). make sure output is large enough.
+    void encode(uint8_t *output, const uint32_t *input, size_t count);
+    void encode(uint8_t *output, const uint32_t input);
+    void encode(uint8_t *output, const uint64_t input);
 };

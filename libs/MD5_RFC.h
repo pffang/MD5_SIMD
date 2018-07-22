@@ -14,8 +14,6 @@ public:
 private:
     void transform(const uint8_t block[BLOCK_SIZE]);
     void decode(uint32_t *output, const uint8_t *input);
-    void encode(uint8_t *output, const uint32_t *input, size_t count);
-    void encode(uint8_t *output, const size_t input);
 
     // F, G, H and I are basic MD5 functions.
     inline uint32_t F(uint32_t x, uint32_t y, uint32_t z) { return (x & y) | ((~x) & z); }

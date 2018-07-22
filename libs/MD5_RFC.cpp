@@ -7,27 +7,6 @@ void MD5_RFC::decode(uint32_t *output, const uint8_t *input)
         output[i] = ((uint32_t)input[j]) | (((uint32_t)input[j + 1]) << 8) | (((uint32_t)input[j + 2]) << 16) | (((uint32_t)input[j + 3]) << 24);
 }
 
-// encodes input (uint32_t) into output (unsigned char). make sure output is large enough.
-void MD5_RFC::encode(uint8_t *output, const uint32_t *input, size_t count)
-{
-    for (size_t i = 0, j = 0; i < count; i++, j += 4)
-    {
-        for (uint32_t k = 0; k < 4; k++)
-        {
-            output[j + k] = (input[i] >> (k << 3)) & 0xFF;
-        }
-    }
-}
-
-// encodes input (size_t) into output (unsigned char). make sure output is large enough.
-void MD5_RFC::encode(uint8_t *output, const size_t input)
-{
-    for (uint32_t i = 0; i < sizeof(size_t); i++)
-    {
-        output[i] = (input >> (i << 3)) & 0xFF;
-    }
-}
-
 // apply MD5 algo on a block
 void MD5_RFC::transform(const uint8_t block[BLOCK_SIZE])
 {

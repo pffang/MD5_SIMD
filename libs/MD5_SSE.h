@@ -49,9 +49,6 @@ private:
     void transform(const uint8_t block[BLOCK_SIZE]);
 
     void decode(__m128i *output, const uint8_t *input, uint64_t len);
-
-    void encode(uint8_t *output, const uint64_t input);
-    void encode(uint8_t *output, const uint32_t *input, uint64_t len);
 };
 
 std::string calc_string_md5_sse(const std::string &str);

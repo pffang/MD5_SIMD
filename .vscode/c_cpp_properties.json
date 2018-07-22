@@ -1,31 +1,17 @@
 {
-  "configurations": [
-    {
-      "browse": {
-        "limitSymbolsToIncludedHeaders": true,
-        "path": [
-          "${workspaceFolder}"
-        ]
-      },
-      "cStandard": "c99",
-      "compilerPath": "\"/usr/bin/g++-8 -march=native\"",
-      "cppStandard": "c++17",
-      "defines": [],
-      "includePath": [
-        "${workspaceFolder}/**",
-        "/usr/local/include",
-        "/usr/include",
-        "/usr/include/c++/8",
-        "/usr/include/c++/8/backward",
-        "/usr/include/x86_64-linux-gnu",
-        "/usr/include/x86_64-linux-gnu/c++/8",
-        "/usr/lib/gcc/x86_64-linux-gnu/8/include",
-        "/usr/lib/gcc/x86_64-linux-gnu/8/include-fixed"
-      ],
-      "intelliSenseMode": "${default}",
-      "name": "Linux"
-    }
-  ],
-  "version": 4
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "clang-x64",
+            "compileCommands": "${workspaceFolder}/CPUID/build/compile_commands.json"
+        }
+    ],
+    "version": 4
 }
-

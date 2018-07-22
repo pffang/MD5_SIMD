@@ -21,25 +21,6 @@ void MD5_SSE::decode(__m128i *output, const uint8_t *input, uint64_t len)
     }
 }
 
-void MD5_SSE::encode(uint8_t *output, const uint64_t input)
-{
-    for (uint32_t i = 0; i < 4; i++)
-    {
-        output[i] = (input >> (i << 3)) & 0xff;
-    }
-}
-
-void MD5_SSE::encode(uint8_t *output, const uint32_t *input, uint64_t len)
-{
-    for (uint64_t i = 0, j = 0; j < len; i++, j += 4)
-    {
-        output[j]     = input[i] & 0xff;
-        output[j + 1] = (input[i] >> 8) & 0xff;
-        output[j + 2] = (input[i] >> 16) & 0xff;
-        output[j + 3] = (input[i] >> 24) & 0xff;
-    }
-}
-
 void MD5_SSE::transform(const uint8_t block[BLOCK_SIZE])
 {
     __m128i a = state[0], b = state[1], c = state[2], d = state[3], x[16] = {0};

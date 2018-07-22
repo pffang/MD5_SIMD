@@ -22,3 +22,30 @@ std::string MD5_Base::hexdigest() const
 
     return ssbuf.str();
 }
+
+void MD5_Base::encode(uint8_t *output, const uint32_t *input, size_t count)
+{
+    for (size_t i = 0, j = 0; i < count; i++, j += 4)
+    {
+        for (uint32_t k = 0; k < 4; k++)
+        {
+            output[j + k] = (input[i] >> (k << 3)) & 0xFF;
+        }
+    }
+}
+
+void MD5_Base::encode(uint8_t *output, const uint32_t input)
+{
+    for (uint8_t i = 0; i < 4; i++)
+    {
+        output[i] = (input >> (i << 3)) & 0xFF;
+    }
+}
+
+void MD5_Base::encode(uint8_t *output, const uint64_t input)
+{
+    for (uint8_t i = 0; i < 8; i++)
+    {
+        output[i] = (input >> (i << 3)) & 0xFF;
+    }
+}
