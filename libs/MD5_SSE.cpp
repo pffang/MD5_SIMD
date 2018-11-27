@@ -14,10 +14,8 @@ void MD5_SSE::decode(__m128i *output, const uint8_t *input, uint64_t len)
 {
     for (uint64_t i = 0, j = 0; j < len; i++, j += 4)
     {
-        output[i] = _mm_set_epi32(((uint32_t)input[j]) | (((uint32_t)input[j + 1]) << 8) | (((uint32_t)input[j + 2]) << 16) | (((uint32_t)input[j + 3]) << 24),
-                                  ((uint32_t)input[j]) | (((uint32_t)input[j + 1]) << 8) | (((uint32_t)input[j + 2]) << 16) | (((uint32_t)input[j + 3]) << 24),
-                                  ((uint32_t)input[j]) | (((uint32_t)input[j + 1]) << 8) | (((uint32_t)input[j + 2]) << 16) | (((uint32_t)input[j + 3]) << 24),
-                                  ((uint32_t)input[j]) | (((uint32_t)input[j + 1]) << 8) | (((uint32_t)input[j + 2]) << 16) | (((uint32_t)input[j + 3]) << 24));
+        uint32_t tmp = ((uint32_t)input[j]) | (((uint32_t)input[j + 1]) << 8) | (((uint32_t)input[j + 2]) << 16) | (((uint32_t)input[j + 3]) << 24);
+        output[i]    = _mm_set_epi32(tmp, tmp, tmp, tmp);
     }
 }
 
