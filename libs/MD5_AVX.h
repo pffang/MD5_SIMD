@@ -13,7 +13,7 @@ public:
     void finalize();
 
 private:
-    __m256i state[4];  // digest so far
+    __m256i state[4];  // digest so far    
     inline __m256i F(__m256i x, __m256i y, __m256i z) { return _mm256_castps_si256(_mm256_or_ps(_mm256_and_ps(_mm256_castsi256_ps(x), _mm256_castsi256_ps(y)), _mm256_andnot_ps(_mm256_castsi256_ps(x), _mm256_castsi256_ps(z)))); }
     inline __m256i G(__m256i x, __m256i y, __m256i z) { return _mm256_castps_si256(_mm256_or_ps(_mm256_and_ps(_mm256_castsi256_ps(x), _mm256_castsi256_ps(z)), _mm256_andnot_ps(_mm256_castsi256_ps(z), _mm256_castsi256_ps(y)))); }
     inline __m256i H(__m256i x, __m256i y, __m256i z) { return _mm256_castps_si256(_mm256_xor_ps(_mm256_castsi256_ps(x), _mm256_xor_ps(_mm256_castsi256_ps(y), _mm256_castsi256_ps(z)))); }

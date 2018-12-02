@@ -18,4 +18,4 @@ target_link_libraries(tests CPUID MD5_SIMD gtest Threads::Threads)
 
 enable_testing()
 gtest_discover_tests(tests)
-add_custom_command(TARGET tests POST_BUILD COMMAND tests)
+#add_custom_command(TARGET tests POST_BUILD COMMAND tests)
