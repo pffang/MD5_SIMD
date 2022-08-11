@@ -1,5 +1,7 @@
 project(MD5_SIMD_TESTS)
 
+enable_testing()
+
 include(GoogleTest)
 
 aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR} SRC_LIST)
@@ -16,6 +18,5 @@ set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 target_link_libraries(tests CPUID MD5_SIMD gtest Threads::Threads)
 
-enable_testing()
 gtest_discover_tests(tests)
 #add_custom_command(TARGET tests POST_BUILD COMMAND tests)
