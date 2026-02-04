@@ -7,7 +7,7 @@ MD5_AVX::MD5_AVX()
 {
     // load magic initialization constants.
     for (uint32_t i = 0; i < 4; i++)
-       state[i] = _mm256_set1_epi32(MAGIC_NUMBER[i]);
+        state[i] = _mm256_set1_epi32(MAGIC_NUMBER[i]);
 }
 
 void MD5_AVX::decode(__m256i *output, const uint8_t *input, uint64_t len)
@@ -15,7 +15,7 @@ void MD5_AVX::decode(__m256i *output, const uint8_t *input, uint64_t len)
     for (uint64_t i = 0, j = 0; j < len; i++, j += 4)
     {
         uint32_t tmp = ((uint32_t)input[j]) | (((uint32_t)input[j + 1]) << 8) | (((uint32_t)input[j + 2]) << 16) | (((uint32_t)input[j + 3]) << 24);
-        output[i]    = _mm256_set_epi32(tmp, tmp, tmp, tmp, tmp, tmp, tmp, tmp);
+        output[i]    = _mm256_set1_epi32(tmp);
     }
 }
 

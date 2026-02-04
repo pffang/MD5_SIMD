@@ -1,5 +1,4 @@
 #pragma once
-#include <byteswap.h>
 #include <cstdint>
 #include <cstring>
 #include <iostream>

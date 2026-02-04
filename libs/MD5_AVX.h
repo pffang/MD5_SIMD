@@ -13,20 +13,20 @@ public:
     void finalize();
 
 private:
-    __m256i state[4];  // digest so far    
-    inline __m256i F(__m256i x, __m256i y, __m256i z) { return _mm256_castps_si256(_mm256_or_ps(_mm256_and_ps(_mm256_castsi256_ps(x), _mm256_castsi256_ps(y)), _mm256_andnot_ps(_mm256_castsi256_ps(x), _mm256_castsi256_ps(z)))); }
-    inline __m256i G(__m256i x, __m256i y, __m256i z) { return _mm256_castps_si256(_mm256_or_ps(_mm256_and_ps(_mm256_castsi256_ps(x), _mm256_castsi256_ps(z)), _mm256_andnot_ps(_mm256_castsi256_ps(z), _mm256_castsi256_ps(y)))); }
-    inline __m256i H(__m256i x, __m256i y, __m256i z) { return _mm256_castps_si256(_mm256_xor_ps(_mm256_castsi256_ps(x), _mm256_xor_ps(_mm256_castsi256_ps(y), _mm256_castsi256_ps(z)))); }
-    inline __m256i I(__m256i x, __m256i y, __m256i z)
+    __m256i state[4];  // digest so far
+    inline __m256i F(__m256i x, __m256i y, __m256i z) { return _mm256_or_si256(_mm256_and_si256(x, y), _mm256_andnot_si256(x, z)); }
+    inline __m256i G(__m256i x, __m256i y, __m256i z) { return _mm256_or_si256(_mm256_and_si256(x, z), _mm256_andnot_si256(z, y)); }
+    inline __m256i H(__m256i x, __m256i y, __m256i z) { return _mm256_xor_si256(x, _mm256_xor_si256(y, z)); }
+    inline __m256i I(__m256i x, __m256i y, __m256i z) { return _mm256_xor_si256(y, _mm256_or_si256(x, _mm256_xor_si256(z, _mm256_set1_epi32(-1)))); }
+
+    inline __m256i rotate_left(__m256i x, uint32_t n)
     {
-        return _mm256_castps_si256(_mm256_xor_ps(_mm256_castsi256_ps(y), _mm256_or_ps(_mm256_castsi256_ps(x), _mm256_andnot_ps(_mm256_castsi256_ps(z), _mm256_cmp_ps(_mm256_castsi256_ps(z), _mm256_castsi256_ps(z), _CMP_EQ_OQ)))));
+        if (n == 0)
+            return x;
+        return _mm256_or_si256(_mm256_slli_epi32(x, n), _mm256_srli_epi32(x, 32 - n));
     }
 
-#define SSE_ROTATE_LEFT(x, n) _mm_or_si128(_mm_slli_epi32((x), (n)), _mm_srli_epi32((x), (32 - (n))))
-
-    inline __m256i rotate_left(__m256i x, uint32_t n) { return _mm256_insertf128_si256(_mm256_castsi128_si256(SSE_ROTATE_LEFT(_mm256_castsi256_si128(x), n)), SSE_ROTATE_LEFT(_mm256_extractf128_si256(x, 1), n), 1); }
-
-#define AVX_ADD_INT(x, y) _mm256_insertf128_si256(_mm256_castsi128_si256(_mm_add_epi32(_mm256_castsi256_si128(x), _mm256_castsi256_si128(y))), _mm_add_epi32(_mm256_extractf128_si256(x, 1), _mm256_extractf128_si256(y, 1)), 1)
+#define AVX_ADD_INT _mm256_add_epi32
 
     inline void FF(__m256i &a, __m256i b, __m256i c, __m256i d, __m256i x, uint32_t s, __m256i ac)
     {
@@ -34,18 +34,21 @@ private:
         a = rotate_left(a, s);
         a = AVX_ADD_INT(a, b);
     }
+
     inline void GG(__m256i &a, __m256i b, __m256i c, __m256i d, __m256i x, uint32_t s, __m256i ac)
     {
         a = AVX_ADD_INT(a, AVX_ADD_INT(AVX_ADD_INT(G(b, c, d), x), ac));
         a = rotate_left(a, s);
         a = AVX_ADD_INT(a, b);
     }
+
     inline void HH(__m256i &a, __m256i b, __m256i c, __m256i d, __m256i x, uint32_t s, __m256i ac)
     {
         a = AVX_ADD_INT(a, AVX_ADD_INT(AVX_ADD_INT(H(b, c, d), x), ac));
         a = rotate_left(a, s);
         a = AVX_ADD_INT(a, b);
     }
+
     inline void II(__m256i &a, __m256i b, __m256i c, __m256i d, __m256i x, uint32_t s, __m256i ac)
     {
         a = AVX_ADD_INT(a, AVX_ADD_INT(AVX_ADD_INT(I(b, c, d), x), ac));

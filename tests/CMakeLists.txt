@@ -4,19 +4,15 @@ enable_testing()
 
 include(GoogleTest)
 
-aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR} SRC_LIST)
+include_directories(${MD5_SIMD_SOURCE_DIR}/include ${MD5_SIMD_LIB_SOURCE_DIR}
+                    ${MD5_SIMD_SOURCE_DIR}/CPUID/include)
 
-include_directories(
-	${MD5_SIMD_SOURCE_DIR}/include
-	${MD5_SIMD_LIB_SOURCE_DIR}
-	${MD5_SIMD_SOURCE_DIR}/CPUID/include
-)
+add_executable(UnitTests test.cpp testMD5AVX.cpp testMD5AVX2.cpp testMD5RFC.cpp
+                         testMD5SSE.cpp)
 
-add_executable(tests ${SRC_LIST})
+target_link_libraries(UnitTests CPUID MD5_SIMD gtest)
 
-set(THREADS_PREFER_PTHREAD_FLAG ON)
-find_package(Threads REQUIRED)
-target_link_libraries(tests CPUID MD5_SIMD gtest Threads::Threads)
+gtest_discover_tests(UnitTests)
 
-gtest_discover_tests(tests)
-#add_custom_command(TARGET tests POST_BUILD COMMAND tests)
+add_executable(SpeedTest SpeedTest.cpp)
+target_link_libraries(SpeedTest CPUID MD5_SIMD crypto)
